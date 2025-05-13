@@ -107,7 +107,7 @@ function Dashboard() {
           </div>
           <div className="bg-white shadow-lg rounded-lg p-6 text-center">
             <div className="text-lg font-bold">Total Notification</div>
-            <div className="text-4xl text-red-500">{totalNotifications}</div>
+            <div className="text-4xl text-red-500">{totalNotifications !== null ? totalNotifications : "Loading..."}</div>
           </div>
         </div>
       </main>
