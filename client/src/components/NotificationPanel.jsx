@@ -1,5 +1,5 @@
-// src/components/NotificationPanel.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import NotificationItem from "./NotificationItem";
 import { FaTimesCircle } from "react-icons/fa";
 
@@ -44,6 +44,13 @@ const NotificationPanel = ({ notifications, setPanelOpen, setNotifications }) =>
           ))}
         </div>
       )}
+
+      {/* History link at the bottom */}
+      <div className="border-t pt-3 mt-4 text-center">
+        <Link to="/notification-history" className="text-sm text-gray-700 hover:underline">
+          View Notification History
+        </Link>
+      </div>
     </div>
   );
 };
