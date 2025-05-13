@@ -29,3 +29,12 @@ export const getHistory = async (req, res) => {
     res.status(500).json({ error: 'Server error while fetching history.' });
   }
 };
+
+export const totalNotifications = async (req, res) => {
+  try {
+    const total = await Notification.countDocuments();
+    res.status(200).json({ total });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error while fetching total notifications.' });
+  }
+};

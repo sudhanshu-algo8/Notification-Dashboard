@@ -16,6 +16,7 @@ app.use(cors(
 ));
 
 app.use("/api/notify", router);
+app.use("/api/total", router);
 app.use("/api/history", routerHistory);
 
 
