@@ -1,37 +1,45 @@
 import React, { useEffect, useState } from "react";
 import NotificationPanel from "./components/NotificationPanel";
-import { mockNotifications } from "./data/mockNotifications";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaBell } from "react-icons/fa";
-
+import { socket } from "./services/socket"; 
 function App() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [panelPosition, setPanelPosition] = useState({ top: 0, right: 0 });
 
-  // Simulate receiving mock notifications every 10 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      const randomNotification =
-        mockNotifications[Math.floor(Math.random() * mockNotifications.length)];
+    const handleNotification = (data) => {
+      const newNotification = {
+        id: data._id,
+        title: data.title,
+        message: data.message,
+        type: data.type,
+        read: false,
+      };
 
-      setNotifications((prev) => [randomNotification, ...prev]);
+      setNotifications((prev) => [newNotification, ...prev]);
 
-      toast(`${randomNotification.title}: ${randomNotification.message}`, {
-        type: randomNotification.type,
+      toast(`${newNotification.title}: ${newNotification.message}`, {
+        type: newNotification.type,
         position: "top-right",
         autoClose: 4000,
         hideProgressBar: true,
         closeButton: true,
       });
-    }, 5000);
+    };
 
-    return () => clearInterval(interval);
+    socket.on("notification", handleNotification,(data)=>{
+      console.log("📩 Received notification from server:", data);
+    });
+
+    return () => {
+      socket.off("notification", handleNotification);
+    };
   }, []);
 
-  // Handle notification panel toggle and position
-  const handleNotification = (e) => {
+  const handleNotificationClick = (e) => {
     if (panelOpen) {
       setPanelOpen(false);
     } else {
@@ -51,11 +59,11 @@ function App() {
           <div className="text-2xl font-bold text-gray-800">Dashboard</div>
           <div className="flex items-center space-x-4 relative">
             <button
-              onClick={handleNotification}
+              onClick={handleNotificationClick}
               className="relative text-gray-800 p-2 bg-gray-200 rounded-full hover:bg-gray-300"
             >
               <FaBell className="h-6 w-6" />
-              {notifications.filter((notification) => !notification.read).length > 0 && (
+              {notifications.filter((n) => !n.read).length > 0 && (
                 <span className="absolute top-0 right-0 block h-2 w-2 bg-red-500 rounded-full"></span>
               )}
             </button>
@@ -87,7 +95,7 @@ function App() {
         >
           <NotificationPanel
             notifications={notifications}
-            setNotifications={setNotifications} // Pass setNotifications to update notifications state
+            setNotifications={setNotifications}
             setPanelOpen={setPanelOpen}
           />
         </div>
