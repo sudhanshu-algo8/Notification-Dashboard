@@ -1,6 +1,6 @@
 // src/components/Sidebar.jsx
 import React from "react";
-import { FaHome, FaCog, FaListAlt } from "react-icons/fa"; // React Icons
+import { FaHome, FaCog, FaListAlt } from "react-icons/fa";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   return (

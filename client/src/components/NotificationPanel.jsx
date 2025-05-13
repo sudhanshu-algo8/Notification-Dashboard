@@ -4,7 +4,6 @@ import NotificationItem from "./NotificationItem";
 import { FaTimesCircle } from "react-icons/fa";
 
 const NotificationPanel = ({ notifications, setPanelOpen, setNotifications }) => {
-  // Mark a notification as read (changing background color and read status)
   const handleMarkAsRead = (id) => {
     setNotifications((prev) =>
       prev.map((notification) =>
@@ -13,7 +12,6 @@ const NotificationPanel = ({ notifications, setPanelOpen, setNotifications }) =>
     );
   };
 
-  // Dismiss a notification (removing it from the list)
   const handleDismiss = (id) => {
     setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
@@ -38,7 +36,7 @@ const NotificationPanel = ({ notifications, setPanelOpen, setNotifications }) =>
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {notifications.map((notification) => (
             <NotificationItem
-              key={notification.id} // Ensure each item has a unique key based on id
+              key={notification.id}
               notification={notification}
               onMarkAsRead={handleMarkAsRead}
               onDismiss={handleDismiss}
