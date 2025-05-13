@@ -19,3 +19,13 @@ export const postNotification = async (req, res) => {
     res.status(500).json({ error: 'Server error while saving notification.' });
   }
 };
+
+
+export const getHistory = async (req, res) => {
+  try {
+    const notifications = await Notification.find();
+    res.status(200).json(notifications);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error while fetching history.' });
+  }
+};
