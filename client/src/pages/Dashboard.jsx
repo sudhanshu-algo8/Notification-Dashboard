@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { socket } from "../services/socket";
+import api from "../services/api";
 
 function Dashboard() {
   const [panelOpen, setPanelOpen] = useState(false);
@@ -12,6 +13,7 @@ function Dashboard() {
   const [panelPosition, setPanelPosition] = useState({ top: 0, right: 0 });
   const [socketConnected, setSocketConnected] = useState(false);
   const [clientCount, setClientCount] = useState(0);
+  const [totalNotifications, setTotalNotifications] = useState(null);
 
   useEffect(() => {
     const handleNotification = (data) => {
@@ -33,6 +35,17 @@ function Dashboard() {
         closeButton: true,
       });
     };
+
+    const fetchTotalNotifications = async () => {
+      try {
+        const total = api.getTotalNotifications();
+        setTotalNotifications(total);
+      } catch (error) {
+        console.error("Error fetching total notifications:", error);
+      }
+    };
+
+    fetchTotalNotifications();
 
     const handleConnect = () => {
       console.log("Connected");
@@ -93,8 +106,8 @@ function Dashboard() {
             </div>
           </div>
           <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-            <div className="text-lg font-bold">Pending Alerts</div>
-            <div className="text-4xl text-red-500">3</div>
+            <div className="text-lg font-bold">Total Notification</div>
+            <div className="text-4xl text-red-500">{totalNotifications}</div>
           </div>
         </div>
       </main>
